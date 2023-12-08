@@ -1,3 +1,3 @@
-export default function Main() {
-  return <div>Protected page</div>
+export default function Home() {
+  return <div>Hello Grizzle</div>
 }
