@@ -1,0 +1,152 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id       String @id @default(uuid())
+  user_id  String @unique
+  name     String
+  imageUrl String @db.Text
+  email    String @db.Text
+
+  servers  Server[]
+  members  Member[]
+  channels Channel[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Server {
+  id         String @id @default(uuid())
+  name       String
+  imageUrl   String @db.Text
+  inviteCode String @unique
+
+  profile_id String
+  profile    Profile @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+
+  members  Member[]
+  channels Channel[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([profile_id])
+}
+
+enum MemberRole {
+  ADMIN
+  MODERATOR
+  GUEST
+}
+
+model Member {
+  id   String     @id @default(uuid())
+  role MemberRole @default(GUEST)
+
+  profile_id String
+  profile    Profile @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+
+  server_id String
+  server    Server @relation(fields: [server_id], references: [id], onDelete: Cascade)
+
+  messages       Message[]
+  directMessages DirectMessage[]
+
+  conversationsInitiated Conversation[] @relation("MemberOne")
+  conversationsReceived  Conversation[] @relation("MemberTwo")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([profile_id])
+  @@index([server_id])
+}
+
+enum ChannelType {
+  TEXT
+  AUDIO
+  VIDEO
+}
+
+model Channel {
+  id   String      @id @default(uuid())
+  name String
+  type ChannelType @default(TEXT)
+
+  profile_id String
+  profile    Profile @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+
+  server_id String
+  server    Server @relation(fields: [server_id], references: [id], onDelete: Cascade)
+
+  messages Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([profile_id])
+  @@index([server_id])
+}
+
+model Message {
+  id      String @id @default(uuid())
+  content String @db.Text
+
+  fileUrl String? @db.Text
+
+  member_id String
+  member    Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
+
+  channelId String
+  channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  deleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([channelId])
+  @@index([member_id])
+}
+
+model Conversation {
+  id String @id @default(uuid())
+
+  member_one_id String
+  memberOne     Member @relation("MemberOne", fields: [member_one_id], references: [id], onDelete: Cascade)
+
+  member_two_id String
+  memberTwo     Member @relation("MemberTwo", fields: [member_two_id], references: [id], onDelete: Cascade)
+
+  directMessages DirectMessage[]
+
+  @@unique([member_one_id, member_two_id])
+  @@index([member_two_id])
+}
+
+model DirectMessage {
+  id      String  @id @default(uuid())
+  content String  @db.Text
+  fileUrl String? @db.Text
+
+  member_id String
+  member    Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
+
+  conversation_id String
+  conversation    Conversation @relation(fields: [conversation_id], references: [id], onDelete: Cascade)
+
+  deleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([member_id])
+  @@index([conversation_id])
+}

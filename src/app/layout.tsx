@@ -10,6 +10,7 @@ import { SearchCommand } from '@/components/search-commander'
 
 import './styles/globals.css'
 import { cn } from '@/lib/utils'
+import { STORAGE_KEYS } from '@/constants/general'
 
 const openSans = Open_Sans({ subsets: ['latin'] })
 
@@ -25,13 +26,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="antialiased" suppressHydrationWarning>
-      <body className={cn(openSans.className, 'bg-stone-50 dark:bg-stone-900')}>
+      <body className={cn(openSans.className, 'bg-zinc-50 dark:bg-zinc-800')}>
         <ClerkProvider localization={ptBR}>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
             enableSystem={false}
-            storageKey="@grizzle-theme"
+            storageKey={STORAGE_KEYS.GRIZZLE_THEME}
           >
             <NextUIProviders>
               <Toaster position="bottom-center" />

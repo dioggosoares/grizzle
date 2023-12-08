@@ -52,6 +52,11 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        'grizzle-danger': {
+          DEFAULT: 'var(--grizzle-danger)',
+          dark: 'var(--grizzle-danger)',
+          foreground: 'var(--grizzle-danger-foreground)',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
