@@ -64,6 +64,7 @@ export function ServerHeader({ server, role }: ServerHeaderProps) {
         )}
         {isAdmin && (
           <DropdownMenuItem
+            onClick={() => onOpen('editServer', { server })}
             className="cursor-pointer px-3 py-2 text-sm focus:bg-teal-500
             focus:text-white dark:focus:text-white"
           >
@@ -109,7 +110,7 @@ export function ServerHeader({ server, role }: ServerHeaderProps) {
             dark:focus:text-white"
           >
             Sair do Servidor
-            <DoorOpen className="ml-auto h-4 w-4" />
+            <DoorOpen className="ml-auto h-5 w-5" />
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>
