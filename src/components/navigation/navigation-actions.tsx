@@ -9,12 +9,12 @@ export async function NavigationActions() {
         <button className="group flex items-center">
           <div
             className="mx-3 flex h-12 w-12 items-center justify-center overflow-hidden
-          rounded-3xl bg-background transition-all group-hover:rounded-2xl
-          group-hover:bg-teal-500 dark:bg-zinc-700"
+            rounded-3xl bg-background transition-all group-hover:rounded-2xl
+            group-hover:bg-teal-500 dark:bg-zinc-700"
           >
             <Plus
               className="h-6 w-6 text-teal-500
-            transition group-hover:text-white"
+              transition group-hover:text-white"
             />
           </div>
         </button>

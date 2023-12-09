@@ -5,7 +5,6 @@ import type { Metadata } from 'next'
 import { Toaster } from 'sonner'
 
 import { ThemeProvider } from '@/components/providers/theme-provider'
-import { NextUIProviders } from '@/components/providers/next-ui'
 import { SearchCommand } from '@/components/search-commander'
 
 import './styles/globals.css'
@@ -34,11 +33,9 @@ export default function RootLayout({
             enableSystem={false}
             storageKey={STORAGE_KEYS.GRIZZLE_THEME}
           >
-            <NextUIProviders>
-              <Toaster position="bottom-center" />
-              <SearchCommand />
-              {children}
-            </NextUIProviders>
+            <Toaster position="bottom-center" />
+            <SearchCommand />
+            {children}
           </ThemeProvider>
         </ClerkProvider>
       </body>
