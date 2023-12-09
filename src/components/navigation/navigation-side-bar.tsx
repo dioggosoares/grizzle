@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { UserButton } from '@clerk/nextjs'
 
 import { db } from '@/lib/db'
 import { currentProfile } from '@/lib/current-profile'
@@ -7,6 +8,7 @@ import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { NavigationItem } from '@/components/navigation/navigation-item'
 import { NavigationActions } from '@/components/navigation/navigation-actions'
+import { ModeToggle } from '../mode-toggle'
 
 export async function NavigationSideBar() {
   const profile = await currentProfile()
@@ -26,7 +28,7 @@ export async function NavigationSideBar() {
   return (
     <aside
       className="flex h-full w-full flex-col items-center space-y-4
-    bg-zinc-200 py-3 text-primary dark:bg-zinc-900"
+    bg-grizzle-light-server py-3 text-primary dark:bg-grizzle-dark-server"
     >
       <NavigationActions />
       <Separator
@@ -45,6 +47,17 @@ export async function NavigationSideBar() {
           </div>
         ))}
       </ScrollArea>
+      <div className="mt-auto flex flex-col items-center gap-y-4 pb-3">
+        <ModeToggle />
+        <UserButton
+          afterSignOutUrl="/"
+          appearance={{
+            elements: {
+              avatarBox: 'h-12 w-12',
+            },
+          }}
+        />
+      </div>
     </aside>
   )
 }

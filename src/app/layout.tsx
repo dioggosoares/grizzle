@@ -5,11 +5,14 @@ import type { Metadata } from 'next'
 import { Toaster } from 'sonner'
 
 import { ThemeProvider } from '@/components/providers/theme-provider'
+import { ModalProvider } from '@/components/providers/modal-provider'
 import { SearchCommand } from '@/components/search-commander'
 
-import './styles/globals.css'
-import { cn } from '@/lib/utils'
 import { STORAGE_KEYS } from '@/constants/general'
+
+import { cn } from '@/lib/utils'
+
+import './styles/globals.css'
 
 const openSans = Open_Sans({ subsets: ['latin'] })
 
@@ -25,7 +28,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="antialiased" suppressHydrationWarning>
-      <body className={cn(openSans.className, 'bg-zinc-50 dark:bg-zinc-800')}>
+      <body
+        className={cn(openSans.className, 'bg-white dark:bg-grizzle-dark-chat')}
+      >
         <ClerkProvider localization={ptBR}>
           <ThemeProvider
             attribute="class"
@@ -35,6 +40,7 @@ export default function RootLayout({
           >
             <Toaster position="bottom-center" />
             <SearchCommand />
+            <ModalProvider />
             {children}
           </ThemeProvider>
         </ClerkProvider>

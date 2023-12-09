@@ -2,7 +2,6 @@
 
 import z from 'zod'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -28,7 +27,9 @@ import {
   FormControl,
   Form,
 } from '@/components/ui/form'
-import { Spinner } from '../spinner'
+import { Spinner } from '@/components/spinner'
+
+import { useModal } from '@/hooks/use-modal-store'
 
 const formSchema = z.object({
   name: z.string().min(1, { message: FEEDBACK_MESSAGES.SERVER_NAME_REQUIRED }),
@@ -38,14 +39,11 @@ const formSchema = z.object({
     .url(),
 })
 
-export function InitialModal() {
-  const [isMounted, setIsMounted] = useState(false)
-
+export function CreateServerModal() {
+  const { isOpen, onClose, type } = useModal()
   const router = useRouter()
 
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
+  const isModalOpen = isOpen && type === 'createServer'
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -63,18 +61,19 @@ export function InitialModal() {
 
       form.reset()
       router.refresh()
-      window.location.reload()
+      onClose()
     } catch (error) {
       console.log(error)
     }
   }
 
-  if (!isMounted) {
-    return null
+  function handleClose() {
+    form.reset()
+    onClose()
   }
 
   return (
-    <Dialog open>
+    <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="overflow-hidden bg-zinc-50 p-0 text-zinc-950">
         <DialogHeader className="px-6 pt-8">
           <DialogTitle className="text-center text-2xl">

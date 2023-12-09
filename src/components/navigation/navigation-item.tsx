@@ -36,8 +36,11 @@ export function NavigationItem({ id, imageUrl, name }: NavigationItemProps) {
         />
         <div
           className={cn(
-            'rounded-3xltransition-all group relative mx-3 flex h-12 w-12 overflow-hidden',
-            params?.serverId === id && 'rounded-2xl bg-primary/10 text-primary',
+            `group relative mx-3 flex h-12 w-12 overflow-hidden rounded-3xl
+            bg-background transition-all dark:bg-zinc-700`,
+            params?.serverId !== id && 'group-hover:rounded-2xl',
+            params?.serverId === id &&
+              'rounded-2xl text-primary dark:bg-zinc-700',
           )}
         >
           <Image fill src={imageUrl} alt="Canal" />

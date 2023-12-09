@@ -55,6 +55,15 @@ module.exports = {
           dark: 'var(--grizzle-danger)',
           foreground: 'var(--grizzle-danger-foreground)',
         },
+        'grizzle-dark': {
+          server: 'var(--grizzle-zinc-900)',
+          channel: 'var(--grizzle-zinc-800)',
+          chat: 'var(--grizzle-zinc-700)',
+        },
+        'grizzle-light': {
+          server: 'var(--grizzle-zinc-200)',
+          channel: 'var(--grizzle-zinc-100)',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
