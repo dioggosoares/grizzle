@@ -62,13 +62,16 @@ export function InviteModal() {
           </DialogTitle>
         </DialogHeader>
         <div className="p-6">
-          <Label className="text-xs font-bold uppercase text-zinc-500 dark:text-secondary/70">
+          <Label
+            className="text-xs font-bold uppercase text-zinc-500
+            dark:text-secondary/70"
+          >
             Link de convite do servidor
           </Label>
           <div className="mt-2 flex items-center gap-x-2">
             <Input
               disabled={isLoading}
-              className="border-0 bg-zinc-300/50 text-black focus-visible:ring-0
+              className="text-zinc-900 focus-visible:ring-0
               focus-visible:ring-offset-0"
               value={inviteUrl}
               readOnly

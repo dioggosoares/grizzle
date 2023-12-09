@@ -117,7 +117,7 @@ export function CreateServerModal() {
                     <FormControl>
                       <Input
                         disabled={isLoading}
-                        className="border-0 bg-zinc-300/50 text-black focus-visible:ring-0 focus-visible:ring-offset-0"
+                        className="text-zinc-900 focus-visible:ring-0 focus-visible:ring-offset-0"
                         placeholder="Escreva o nome do servidor"
                         {...field}
                       />

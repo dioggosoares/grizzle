@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { MemberRole } from '@prisma/client'
 
 import { db } from '@/lib/db'
 import { currentProfile } from '@/lib/current-profile'
@@ -7,7 +8,7 @@ import { FEEDBACK_MESSAGES } from '@/constants/messages'
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { memberId: string } },
+  { params }: { params: { channelId: string } },
 ) {
   try {
     const profile = await currentProfile()
@@ -25,8 +26,8 @@ export async function DELETE(
       })
     }
 
-    if (!params.memberId) {
-      return new NextResponse(FEEDBACK_MESSAGES.MEMBER_ID_ERROR, {
+    if (!params.channelId) {
+      return new NextResponse(FEEDBACK_MESSAGES.CHANNEL_ID_ERROR, {
         status: 400,
       })
     }
@@ -34,25 +35,22 @@ export async function DELETE(
     const server = await db.server.update({
       where: {
         id: serverId,
-        profile_id: profile.id,
-      },
-      data: {
         members: {
-          deleteMany: {
-            id: params.memberId,
-            profile_id: {
-              not: profile.id,
+          some: {
+            profile_id: profile.id,
+            role: {
+              in: [MemberRole.ADMIN, MemberRole.MODERATOR],
             },
           },
         },
       },
-      include: {
-        members: {
-          include: {
-            profile: true,
-          },
-          orderBy: {
-            role: 'asc',
+      data: {
+        channels: {
+          delete: {
+            id: params.channelId,
+            name: {
+              not: 'general',
+            },
           },
         },
       },
@@ -60,19 +58,19 @@ export async function DELETE(
 
     return NextResponse.json(server)
   } catch (error) {
-    console.log('[MEMBER_ID_DELETE]', error)
+    console.log('[CHANNEL_ID_DELETE]', error)
     return new NextResponse('Internal Error', { status: 500 })
   }
 }
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { memberId: string } },
+  { params }: { params: { channelId: string } },
 ) {
   try {
     const profile = await currentProfile()
+    const { name, type } = await req.json()
     const { searchParams } = new URL(req.url)
-    const { role } = await req.json()
 
     const serverId = searchParams.get('serverId')
 
@@ -84,37 +82,39 @@ export async function PATCH(
       return new NextResponse('Server ID missing', { status: 400 })
     }
 
-    if (!params.memberId) {
-      return new NextResponse('Member ID missing', { status: 400 })
+    if (!params.channelId) {
+      return new NextResponse('Channel ID missing', { status: 400 })
+    }
+
+    if (name === 'general') {
+      return new NextResponse("Name cannot be 'general'", { status: 400 })
     }
 
     const server = await db.server.update({
       where: {
         id: serverId,
-        profile_id: profile.id,
-      },
-      data: {
         members: {
-          update: {
-            where: {
-              id: params.memberId,
-              profile_id: {
-                not: profile.id,
-              },
-            },
-            data: {
-              role,
+          some: {
+            profile_id: profile.id,
+            role: {
+              in: [MemberRole.ADMIN, MemberRole.MODERATOR],
             },
           },
         },
       },
-      include: {
-        members: {
-          include: {
-            profile: true,
-          },
-          orderBy: {
-            role: 'asc',
+      data: {
+        channels: {
+          update: {
+            where: {
+              id: params.channelId,
+              NOT: {
+                name: 'general',
+              },
+            },
+            data: {
+              name,
+              type,
+            },
           },
         },
       },
@@ -122,7 +122,7 @@ export async function PATCH(
 
     return NextResponse.json(server)
   } catch (error) {
-    console.log('[MEMBERS_ID_PATCH]', error)
+    console.log('[CHANNEL_ID_PATCH]', error)
     return new NextResponse('Internal Error', { status: 500 })
   }
 }
