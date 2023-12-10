@@ -107,6 +107,7 @@ export function ServerHeader({ server, role }: ServerHeaderProps) {
         )}
         {!isAdmin && (
           <DropdownMenuItem
+            onClick={() => onOpen('leaveServer', { server })}
             className="cursor-pointer px-3 py-2 text-sm text-grizzle-danger
             focus:bg-grizzle-danger focus:text-white
             dark:text-grizzle-danger-foreground focus:dark:bg-grizzle-danger-foreground
