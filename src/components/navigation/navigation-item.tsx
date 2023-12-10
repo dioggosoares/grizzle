@@ -29,9 +29,12 @@ export function NavigationItem({ id, imageUrl, name }: NavigationItemProps) {
       >
         <div
           className={cn(
-            'absolute left-0 w-1 rounded-r-full bg-primary transition-all',
-            params?.serverId !== id && 'group-hover:h-5',
-            params?.serverId === id ? 'h-9' : 'h-2',
+            'absolute left-0 w-1 -translate-x-1 rounded-r-full bg-primary transition-all',
+            params?.serverId !== id &&
+              'group-hover:h-5 group-hover:translate-x-0',
+            params?.serverId === id
+              ? 'h-9 translate-x-0 transition-all duration-100 ease-linear'
+              : 'h-2',
           )}
         />
         <div

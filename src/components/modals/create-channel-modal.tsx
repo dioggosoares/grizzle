@@ -4,6 +4,7 @@ import axios from 'axios'
 import * as z from 'zod'
 import qs from 'query-string'
 import { useEffect } from 'react'
+import { Hash } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { ChannelType } from '@prisma/client'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -12,6 +13,10 @@ import { useParams, useRouter } from 'next/navigation'
 import { useModal } from '@/hooks/use-modal-store'
 
 import { FEEDBACK_MESSAGES } from '@/constants/messages'
+
+import { Spinner } from '@/components/spinner'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 
 import {
   Dialog,
@@ -28,8 +33,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
@@ -37,8 +40,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Spinner } from '../spinner'
-import { Hash } from 'lucide-react'
 
 const formSchema = z.object({
   name: z

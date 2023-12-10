@@ -27,7 +27,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <div
           className={cn(
             `group relative flex h-10 items-center justify-center gap-2 rounded-md border-0 bg-zinc-300/50
-            transition-colors duration-150 ease-linear`,
+            px-1 transition-colors duration-150 ease-linear`,
             {
               'border-red-500': error,
               'hover:border-red-500': error,
@@ -68,7 +68,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             {rightIcon}
           </span>
         </div>
-        {error && <span className="text-xs text-red-500">{error}</span>}
+        {error && (
+          <span className="font-medium text-grizzle-danger-foreground">
+            {error}
+          </span>
+        )}
       </div>
     )
   },
