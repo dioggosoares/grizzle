@@ -6,7 +6,6 @@ import { Toaster } from 'sonner'
 
 import { ThemeProvider } from '@/components/providers/theme-provider'
 import { ModalProvider } from '@/components/providers/modal-provider'
-import { SearchCommand } from '@/components/search-commander'
 
 import { STORAGE_KEYS } from '@/constants/general'
 
@@ -39,7 +38,6 @@ export default function RootLayout({
             storageKey={STORAGE_KEYS.GRIZZLE_THEME}
           >
             <Toaster position="bottom-center" />
-            <SearchCommand />
             <ModalProvider />
             {children}
           </ThemeProvider>
