@@ -1,6 +1,7 @@
 'use client'
 
 import axios from 'axios'
+import qs from 'query-string'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
@@ -16,24 +17,30 @@ import { useModal } from '@/hooks/use-modal-store'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/spinner'
 
-export function DeleteServerModal() {
+export function DeleteChannelModal() {
   const { isOpen, onClose, type, data } = useModal()
   const router = useRouter()
 
-  const isModalOpen = isOpen && type === 'deleteServer'
-  const { server } = data
+  const isModalOpen = isOpen && type === 'deleteChannel'
+  const { server, channel } = data
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleDeleteServerConfirm = async () => {
+  const onClick = async () => {
     try {
       setIsLoading(true)
+      const url = qs.stringifyUrl({
+        url: `/api/channels/${channel?.id}`,
+        query: {
+          serverId: server?.id,
+        },
+      })
 
-      await axios.delete(`/api/servers/${server?.id}`)
+      await axios.delete(url)
 
       onClose()
       router.refresh()
-      router.push('/')
+      router.push(`/servers/${server?.id}`)
     } catch (error) {
       console.log(error)
     } finally {
@@ -46,25 +53,25 @@ export function DeleteServerModal() {
       <DialogContent className="overflow-hidden bg-white p-0 text-black">
         <DialogHeader className="px-6 pt-8">
           <DialogTitle className="text-center text-2xl font-bold">
-            Excluir Servidor
+            Excluir Canal
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
             Você tem certeza de que quer fazer isso? <br />
             <span className="font-semibold text-teal-500">
-              {server?.name}
+              #{channel?.name}
             </span>{' '}
             será excluído permanentemente.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="bg-gray-100 px-6 py-4">
-          <div className="flex w-full items-center justify-end gap-x-3">
+          <div className="flex w-full items-center justify-end">
             <Button disabled={isLoading} onClick={onClose} variant="ghost">
               Cancelar
             </Button>
             <Button
               disabled={isLoading}
               variant="danger"
-              onClick={handleDeleteServerConfirm}
+              onClick={onClick}
               className="min-w-[6.1875rem] transition-opacity duration-150 ease-linear"
             >
               {isLoading ? (

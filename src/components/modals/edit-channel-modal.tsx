@@ -1,23 +1,17 @@
 'use client'
 
+import qs from 'query-string'
 import axios from 'axios'
 import * as z from 'zod'
-import qs from 'query-string'
 import { ReactNode, useEffect } from 'react'
 import { Hash, Mic, Video } from 'lucide-react'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { ChannelType } from '@prisma/client'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useParams, useRouter } from 'next/navigation'
-
-import { useModal } from '@/hooks/use-modal-store'
 
 import { FEEDBACK_MESSAGES } from '@/constants/messages'
 
 import { Spinner } from '@/components/spinner'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-
 import {
   Dialog,
   DialogContent,
@@ -33,6 +27,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
+import { useModal } from '@/hooks/use-modal-store'
 import {
   Select,
   SelectContent,
@@ -53,43 +51,41 @@ const formSchema = z.object({
   type: z.nativeEnum(ChannelType),
 })
 
-export function CreateChannelModal() {
+export function EditChannelModal() {
   const { isOpen, onClose, type, data } = useModal()
   const router = useRouter()
-  const params = useParams()
 
-  const isModalOpen = isOpen && type === 'createChannel'
-  const { channelType } = data
+  const isModalOpen = isOpen && type === 'editChannel'
+  const { channel, server } = data
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      type: channelType || ChannelType.TEXT,
+      type: channel?.type || ChannelType.TEXT,
     },
   })
 
   let typeChannel: ReactNode = <></>
 
   useEffect(() => {
-    if (channelType) {
-      form.setValue('type', channelType)
-    } else {
-      form.setValue('type', ChannelType.TEXT)
+    if (channel) {
+      form.setValue('name', channel.name)
+      form.setValue('type', channel.type)
     }
-  }, [channelType, form])
+  }, [form, channel])
 
   const isLoading = form.formState.isSubmitting
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const url = qs.stringifyUrl({
-        url: '/api/channels',
+        url: `/api/channels/${channel?.id}`,
         query: {
-          serverId: params?.serverId,
+          serverId: server?.id,
         },
       })
-      await axios.post(url, values)
+      await axios.patch(url, values)
 
       form.reset()
       router.refresh()
@@ -99,7 +95,7 @@ export function CreateChannelModal() {
     }
   }
 
-  switch (channelType || form.getValues('type')) {
+  switch (channel?.type || form.getValues('type')) {
     case 'TEXT':
       typeChannel = <Hash className="h-5 w-5 text-zinc-500" />
       break
@@ -123,7 +119,7 @@ export function CreateChannelModal() {
       <DialogContent className="overflow-hidden bg-white p-0 text-black">
         <DialogHeader className="px-6 pt-8">
           <DialogTitle className="text-center text-2xl font-bold">
-            Criar Canal
+            Editar Canal
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -142,8 +138,8 @@ export function CreateChannelModal() {
                         leftIcon={typeChannel}
                         positionIcon="left"
                         disabled={isLoading}
-                        className="text-zinc-900 focus-visible:ring-0 focus-visible:ring-offset-0"
-                        placeholder="Escreva o nome do canal"
+                        className="border-0 bg-zinc-300/50 text-black focus-visible:ring-0 focus-visible:ring-offset-0"
+                        placeholder="Enter channel name"
                         {...field}
                       />
                     </FormControl>
@@ -156,7 +152,7 @@ export function CreateChannelModal() {
                 name="type"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Tipo do canal</FormLabel>
+                    <FormLabel>Tipo do Canal</FormLabel>
                     <Select
                       disabled={isLoading}
                       onValueChange={field.onChange}
@@ -164,7 +160,7 @@ export function CreateChannelModal() {
                     >
                       <FormControl>
                         <SelectTrigger className="border-0 bg-zinc-300/50 capitalize text-black outline-none ring-offset-0 focus:ring-0 focus:ring-offset-0">
-                          <SelectValue placeholder="Selecione o tipo do canal" />
+                          <SelectValue placeholder="Select a channel type" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -188,12 +184,12 @@ export function CreateChannelModal() {
               <Button
                 variant="primary"
                 disabled={isLoading}
-                className="min-w-[6.4375rem]"
+                className="min-w-[4.5rem]"
               >
                 {isLoading ? (
                   <Spinner size="lg" className="text-zinc-50" />
                 ) : (
-                  'Criar canal'
+                  'Salvar'
                 )}
               </Button>
             </DialogFooter>
