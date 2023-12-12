@@ -134,7 +134,10 @@ export function CreateChannelModal() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-xs font-bold uppercase text-zinc-500 dark:text-secondary/70">
+                    <FormLabel
+                      className="text-xs font-bold uppercase text-zinc-500
+                      dark:text-secondary/70"
+                    >
                       Nome do Canal
                     </FormLabel>
                     <FormControl>
@@ -142,7 +145,8 @@ export function CreateChannelModal() {
                         leftIcon={typeChannel}
                         positionIcon="left"
                         disabled={isLoading}
-                        className="text-zinc-900 focus-visible:ring-0 focus-visible:ring-offset-0"
+                        className="text-zinc-900 focus-visible:ring-0
+                        focus-visible:ring-offset-0"
                         placeholder="Escreva o nome do canal"
                         {...field}
                       />
@@ -163,7 +167,11 @@ export function CreateChannelModal() {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="border-0 bg-zinc-300/50 capitalize text-black outline-none ring-offset-0 focus:ring-0 focus:ring-offset-0">
+                        <SelectTrigger
+                          className="border-0 bg-zinc-300/50 capitalize
+                          text-black outline-none ring-offset-0 focus:ring-0
+                          focus:ring-offset-0"
+                        >
                           <SelectValue placeholder="Selecione o tipo do canal" />
                         </SelectTrigger>
                       </FormControl>
