@@ -29,7 +29,7 @@ export async function NavigationSideBar() {
   return (
     <aside
       className="flex h-full w-full flex-col items-center space-y-4
-    bg-grizzle-light-server py-3 text-primary dark:bg-grizzle-dark-server"
+      bg-grizzle-light-server py-3 text-primary dark:bg-grizzle-dark-server"
     >
       <Logo />
       <Separator
