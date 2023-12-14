@@ -70,9 +70,10 @@ export function ServerChannel({ channel, server, role }: ServerChannelProps) {
           </ActionTooltip>
         </div>
       )}
-      {channel.name === 'general' && (
-        <Lock className="ml-auto h-4 w-4 text-zinc-500 dark:text-zinc-400" />
-      )}
+      {channel.name === 'general' ||
+        (channel.name === 'Geral' && role === MemberRole.GUEST && (
+          <Lock className="ml-auto h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+        ))}
     </button>
   )
 }

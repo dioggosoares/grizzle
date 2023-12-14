@@ -38,9 +38,8 @@ export function DeleteChannelModal() {
 
       await axios.delete(url)
 
-      onClose()
       router.refresh()
-      router.push(`/servers/${server?.id}`)
+      onClose()
     } catch (error) {
       console.log(error)
     } finally {
@@ -64,7 +63,7 @@ export function DeleteChannelModal() {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="bg-gray-100 px-6 py-4">
-          <div className="flex w-full items-center justify-end">
+          <div className="flex w-full items-center justify-end gap-x-3">
             <Button disabled={isLoading} onClick={onClose} variant="ghost">
               Cancelar
             </Button>
