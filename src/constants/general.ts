@@ -2,3 +2,8 @@ export enum STORAGE_KEYS {
   // STORAGE KEYS
   GRIZZLE_THEME = '@GRIZZLE:theme',
 }
+
+export enum CONST_VALUES {
+  MESSAGES_BATCH = 10,
+  DATE_FORMAT = 'DD/MM/YYYY, HH:mm',
+}

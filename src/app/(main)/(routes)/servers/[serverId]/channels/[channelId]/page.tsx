@@ -4,8 +4,9 @@ import { redirect } from 'next/navigation'
 import { db } from '@/lib/db'
 import { currentProfile } from '@/lib/current-profile'
 
-import { ChatHeader } from '@/components/chat/chat-header'
 import { ChatInput } from '@/components/chat/chat-input'
+import { ChatHeader } from '@/components/chat/chat-header'
+import { ChatMessages } from '@/components/chat/chat-messages'
 
 interface ChannelProps {
   params: {
@@ -41,7 +42,20 @@ export default async function Channel({ params }: ChannelProps) {
         serverId={channel.server_id}
         type="channel"
       />
-      <div className="flex-1">Future Messages</div>
+      <ChatMessages
+        member={member}
+        name={channel.name}
+        chatId={channel.id}
+        type="channel"
+        apiUrl="/api/messages"
+        socketUrl="/api/socket/messages"
+        socketQuery={{
+          channelId: channel.id,
+          serverId: channel.server_id,
+        }}
+        paramKey="channelId"
+        paramValue={channel.id}
+      />
       <ChatInput
         name={channel.name}
         type="channel"

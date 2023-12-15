@@ -21,7 +21,7 @@ export function EmojiPicker({ onChange }: EmojiPickerProps) {
   return (
     <Popover>
       <PopoverTrigger>
-        <Smile className="text-zinc-500 transition hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300" />
+        <Smile className="text-teal-500 transition hover:text-teal-600 dark:text-zinc-50 dark:hover:text-zinc-200" />
       </PopoverTrigger>
       <PopoverContent
         side="right"
