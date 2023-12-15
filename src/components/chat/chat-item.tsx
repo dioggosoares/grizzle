@@ -240,7 +240,8 @@ export function ChatItem({
                 </Button>
               </form>
               <span className="mt-1 text-[10px] text-zinc-400">
-                Press escape to cancel, enter to save
+                Aperte <span className="text-teal-300">Esc</span> para cancelar,{' '}
+                <span className="text-teal-300">Enter</span> para salvar.
               </span>
             </Form>
           )}
