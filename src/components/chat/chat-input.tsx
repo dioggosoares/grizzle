@@ -69,14 +69,18 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
                       <button
                         type="button"
                         onClick={() => onOpen('messageFile', { apiUrl, query })}
-                        className="flex h-[24px] w-[24px] items-center justify-center rounded-full bg-zinc-500 p-1 transition hover:bg-zinc-600 dark:bg-zinc-400 dark:hover:bg-zinc-300"
+                        className="flex h-6 w-6 items-center justify-center
+                        rounded-full bg-zinc-500 p-1 transition hover:bg-zinc-600
+                        dark:bg-zinc-400 dark:hover:bg-zinc-300"
                       >
                         <Plus className="text-white dark:text-zinc-800" />
                       </button>
                     }
                     positionIcon="both"
                     disabled={isLoading}
-                    className="border-0 border-none px-3 text-zinc-600 placeholder:text-zinc-200/50 focus-visible:ring-0 focus-visible:ring-offset-0 dark:text-zinc-50"
+                    className="border-0 border-none px-3 text-zinc-600
+                    placeholder:text-zinc-200/50 focus-visible:ring-0
+                    focus-visible:ring-offset-0 dark:text-zinc-50"
                     placeholder={`Mensagem ${
                       type === 'conversation' ? name : '#' + name
                     }`}
