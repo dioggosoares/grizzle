@@ -58,7 +58,9 @@ export default async function handler(
     })
 
     if (!channel) {
-      return res.status(404).json({ error: 'Channel not found' })
+      return res
+        .status(404)
+        .json({ error: FEEDBACK_MESSAGES.CHANNEL_NOT_FOUND })
     }
 
     const member = server.members.find(
@@ -66,7 +68,7 @@ export default async function handler(
     )
 
     if (!member) {
-      return res.status(404).json({ error: 'Member not found' })
+      return res.status(404).json({ error: FEEDBACK_MESSAGES.MEMBER_NOT_FOUND })
     }
 
     let message = await db.message.findFirst({
@@ -84,7 +86,9 @@ export default async function handler(
     })
 
     if (!message || message.deleted) {
-      return res.status(404).json({ error: 'Message not found' })
+      return res
+        .status(404)
+        .json({ error: FEEDBACK_MESSAGES.MESSAGE_NOT_FOUND })
     }
 
     const isMessageOwner = message.member_id === member.id
@@ -103,7 +107,7 @@ export default async function handler(
         },
         data: {
           fileUrl: null,
-          content: 'This message has been deleted.',
+          content: FEEDBACK_MESSAGES.MESSAGE_DELETED,
           deleted: true,
         },
         include: {

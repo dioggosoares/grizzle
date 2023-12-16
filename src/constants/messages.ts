@@ -6,6 +6,8 @@ export enum FEEDBACK_MESSAGES {
   SERVER_NOT_FOUND = 'Servidor não encontrado.',
   CHANNEL_NOT_FOUND = 'Canal não encontrado.',
   MEMBER_NOT_FOUND = 'Membro não encontrado.',
+  MESSAGE_NOT_FOUND = 'Mensagem não encontrada.',
+  MESSAGE_DELETED = 'Está mensagem foi deletada.',
   METHOD_NOT_ALLOWED = 'Método não permitido.',
   SERVER_ID_ERROR = 'Faltando o ID do servidor.',
   CHANNEL_ID_ERROR = 'Faltando o ID do canal.',

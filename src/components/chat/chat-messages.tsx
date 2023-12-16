@@ -8,6 +8,7 @@ import dayjs from 'dayjs'
 import '@/lib/dayjs'
 
 import { useChatQuery } from '@/hooks/use-chat-query'
+import { useChatSocket } from '@/hooks/use-chat-socket'
 import { useChatScroll } from '@/hooks/use-chat-scroll'
 
 import { ChatWelcome } from '@/components/chat/chat-welcome'
@@ -45,6 +46,8 @@ export function ChatMessages({
   type,
 }: ChatMessagesProps) {
   const queryKey = `chat:${chatId}`
+  const addKey = `chat:${chatId}:messages`
+  const updateKey = `chat:${chatId}:messages:update`
 
   const chatRef = useRef<ElementRef<'div'>>(null)
   const bottomRef = useRef<ElementRef<'div'>>(null)
@@ -56,6 +59,7 @@ export function ChatMessages({
       paramKey,
       paramValue,
     })
+  useChatSocket({ queryKey, addKey, updateKey })
   useChatScroll({
     chatRef,
     bottomRef,
@@ -86,8 +90,25 @@ export function ChatMessages({
 
   return (
     <div ref={chatRef} className="flex flex-1 flex-col overflow-y-auto py-4">
-      <div className="flex-1" />
-      <ChatWelcome type={type} name={name} />
+      {!hasNextPage && <div className="flex-1" />}
+      {!hasNextPage && <ChatWelcome type={type} name={name} />}
+
+      {hasNextPage && (
+        <div className="flex justify-center">
+          {isFetchingNextPage ? (
+            <Spinner className="my-4 h-6 w-6 text-teal-500" />
+          ) : (
+            <button
+              onClick={() => fetchNextPage()}
+              className="my-4 text-xs text-zinc-500 transition hover:text-zinc-600
+              dark:text-zinc-400 dark:hover:text-zinc-300"
+            >
+              Carregar mensagens anteriores
+            </button>
+          )}
+        </div>
+      )}
+
       <div className="mt-auto flex flex-col-reverse">
         {data?.pages?.map((group, i) => (
           <Fragment key={i}>
@@ -111,6 +132,7 @@ export function ChatMessages({
           </Fragment>
         ))}
       </div>
+      <div ref={bottomRef} />
     </div>
   )
 }

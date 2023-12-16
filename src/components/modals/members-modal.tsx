@@ -43,7 +43,7 @@ import {
 import { ActionTooltip } from '../action-tooltip'
 
 const roleIconMap = {
-  GUEST: <Shield className="h-4 w-4 text-zinc-600" />,
+  GUEST: null,
   MODERATOR: <ShieldHalf className="h-4 w-4 text-blue-600" />,
   ADMIN: <ShieldCheck className="h-4 w-4 text-grizzle-danger-foreground" />,
 }

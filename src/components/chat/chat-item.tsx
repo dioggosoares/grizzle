@@ -9,14 +9,7 @@ import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Member, MemberRole, Profile } from '@prisma/client'
-import {
-  Edit,
-  FileIcon,
-  Shield,
-  ShieldCheck,
-  ShieldHalf,
-  Trash,
-} from 'lucide-react'
+import { Edit, FileIcon, ShieldCheck, ShieldHalf, Trash } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
@@ -44,7 +37,7 @@ interface ChatItemProps {
 }
 
 const roleIconMap = {
-  GUEST: <Shield className="h-4 w-4 text-zinc-600" />,
+  GUEST: null,
   MODERATOR: <ShieldHalf className="h-4 w-4 text-blue-600" />,
   ADMIN: <ShieldCheck className="h-4 w-4 text-grizzle-danger-foreground" />,
 }
@@ -131,6 +124,21 @@ export function ChatItem({
   const isPDF = fileType === 'pdf' && fileUrl
   const isImage = !isPDF && fileUrl
 
+  let role = ''
+  switch (member.role) {
+    case 'ADMIN':
+      role = 'Admin'
+      break
+    case 'MODERATOR':
+      role = 'Moderador'
+      break
+    case 'GUEST':
+      role = 'Membro'
+      break
+    default:
+      break
+  }
+
   return (
     <div className="group relative flex w-full items-center p-4 transition hover:bg-black/5">
       <div className="group flex w-full items-start gap-x-2">
@@ -149,7 +157,7 @@ export function ChatItem({
               >
                 {member.profile.name}
               </p>
-              <ActionTooltip label={member.role}>
+              <ActionTooltip label={role}>
                 {roleIconMap[member.role]}
               </ActionTooltip>
             </div>
@@ -162,7 +170,8 @@ export function ChatItem({
               href={fileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="relative mt-2 flex aspect-square h-48 w-48 items-center overflow-hidden rounded-md border bg-secondary"
+              className="relative mt-2 flex aspect-square h-48 w-48 items-center
+              overflow-hidden rounded-md border bg-secondary"
             >
               <Image
                 src={fileUrl}
@@ -196,7 +205,7 @@ export function ChatItem({
               {content}
               {isUpdated && !deleted && (
                 <span className="mx-2 text-[10px] text-zinc-500 dark:text-zinc-400">
-                  (edited)
+                  (editado)
                 </span>
               )}
             </p>

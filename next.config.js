@@ -22,10 +22,6 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'utfs.io',
       },
-      // domains: [
-      //   "uploadthing.com",
-      //   "utfs.io"
-      // ]
     ],
   },
 }
