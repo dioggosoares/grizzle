@@ -1,11 +1,12 @@
 'use client'
 
 import { useUser } from '@clerk/nextjs'
-import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { LiveKitRoom, VideoConference } from '@livekit/components-react'
 import '@livekit/components-styles'
 // import { Channel } from '@prisma/client'
+
+import { Spinner } from '@/components/spinner'
 
 interface MediaRoomProps {
   chatId: string
@@ -36,8 +37,10 @@ export const MediaRoom = ({ chatId, video, audio }: MediaRoomProps) => {
   if (token === '') {
     return (
       <div className="flex flex-1 flex-col items-center justify-center">
-        <Loader2 className="my-4 h-7 w-7 animate-spin text-zinc-500" />
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">Loading...</p>
+        <Spinner className="my-4 h-7 w-7 text-teal-500" />
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          Carregando...
+        </p>
       </div>
     )
   }
